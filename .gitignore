@@ -1,0 +1,33 @@
+# .gitignore for ROS
+
+# Ignore build and devel directories
+/build
+/devel
+
+# Ignore all logfiles
+*.log
+
+# Ignore package lock files
+package-lock.json
+
+# Ignore Python compiled files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore swap files
+*.swp
+*~
+
+# DS_Store files
+.DS_Store
+
+# Ignore .vscode directory
+.vscode
+
+# Ignore .idea directory
+.idea
+
+# Ignore .catkin_tools directory
+.catkin_tools
