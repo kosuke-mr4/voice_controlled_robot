@@ -6,7 +6,6 @@ from std_msgs.msg import Float32, Bool
 
 class VoiceAnalyzer:
     def __init__(self):
-        # rospy.init_node("voice_analyzer", anonymous=True)
         self.pitch_pub = rospy.Publisher("voice_pitch", Float32, queue_size=10)
         self.volume_pub = rospy.Publisher("voice_volume", Float32, queue_size=10)
         self.is_speaking_pub = rospy.Publisher("is_speaking", Bool, queue_size=10)
@@ -40,6 +39,8 @@ class VoiceAnalyzer:
     def get_pitch(self, audio_data):
         # ピッチ解析の処理を実装（例: librosaやpyinを使用）
         # 簡単な例として、音声データの平均値を返す
+
+        # 要調整！
         return np.mean(audio_data)
 
     def get_volume(self, audio_data):

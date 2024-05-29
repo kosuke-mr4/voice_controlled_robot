@@ -5,7 +5,6 @@ from std_msgs.msg import Float32, Bool
 
 class RobotController:
     def __init__(self):
-        # rospy.init_node("robot_controller", anonymous=True)
         self.cmd_vel_pub = rospy.Publisher("cmd_vel", Twist, queue_size=10)
         rospy.Subscriber("voice_pitch", Float32, self.pitch_callback)
         rospy.Subscriber("voice_volume", Float32, self.volume_callback)
