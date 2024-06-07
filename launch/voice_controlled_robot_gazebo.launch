@@ -7,18 +7,14 @@
 
   <node pkg="voice_controlled_robot" type="voice_controlled_robot_node.py" name="voice_controlled_robot_node" output="screen"/>
 
-  <node pkg="gazebo_ros" type="spawn_model" name="spawn_robot"
-        args="-urdf -model voice_controlled_robot -param robot_description -x 0 -y 0 -z 0.5"/>
+  <node name="gazebo_model_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -model voice_controlled_robot -param robot_description -x 0 -y 0 -z 0.5"
+        respawn="false" output="screen">
+    <remap from="/tf" to="/tf_gazebo"/>
+    <param name="delete_on_exit" value="true"/>
+  </node>
 
   <rosparam file="$(find voice_controlled_robot)/config/diff_drive_controller.yaml" command="load"/>
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
         args="diff_drive_controller"/>
-  
-  <node name="gazebo_model_spawner" pkg="gazebo_ros" type="spawn_model"
-      args="-urdf -model voice_controlled_robot -param robot_description -x 0 -y 0 -z 0.5"
-      respawn="false" output="screen">
-  <remap from="/tf" to="/tf_gazebo"/>
-  <param name="delete_on_exit" value="true"/>
-  </node>
-  
 </launch>
