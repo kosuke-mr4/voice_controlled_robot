@@ -2,6 +2,7 @@
 
 import sys
 import os
+import threading
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
 
@@ -14,5 +15,11 @@ if __name__ == "__main__":
 
     voice_analyzer = VoiceAnalyzer()
     robot_controller = RobotController()
+
+    voice_thread = threading.Thread(target=voice_analyzer.analyze_voice)
+    robot_thread = threading.Thread(target=robot_controller.control_robot)
+
+    voice_thread.start()
+    robot_thread.start()
 
     rospy.spin()
