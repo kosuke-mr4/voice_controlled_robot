@@ -67,4 +67,14 @@
       <material name="black"/>
     </visual>
   </link>
+
+    <gazebo>
+    <plugin name="differential_drive_controller" filename="libdifferential_drive_controller.so">
+      <left_joint>left_wheel_joint</left_joint>
+      <right_joint>right_wheel_joint</right_joint>
+      <wheel_separation>0.3</wheel_separation>
+      <wheel_radius>0.05</wheel_radius>
+      <cmd_vel_topic>/cmd_vel</cmd_vel_topic>
+    </plugin>
+  </gazebo>
 </robot>

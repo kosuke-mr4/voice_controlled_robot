@@ -5,6 +5,13 @@
 
   <param name="robot_description" command="$(find xacro)/xacro '$(find voice_controlled_robot)/urdf/voice_controlled_robot.urdf'" />
 
+  <arg name="port" default="9090"/>
+  <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" args="_port:=$(arg port)"/>
+  
+  <rosparam file="$(find voice_controlled_robot)/config/diff_drive_controller.yaml" command="load"/>
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="diff_drive_controller"/>
+
   <node pkg="voice_controlled_robot" type="voice_controlled_robot_node.py" name="voice_controlled_robot_node" output="screen"/>
 
   <node name="gazebo_model_spawner" pkg="gazebo_ros" type="spawn_model"
@@ -14,7 +21,5 @@
     <param name="delete_on_exit" value="true"/>
   </node>
 
-  <rosparam file="$(find voice_controlled_robot)/config/diff_drive_controller.yaml" command="load"/>
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
-        args="diff_drive_controller"/>
+
 </launch>

@@ -15,26 +15,31 @@ class VoiceAnalyzer:
         self.channels = 1
         self.rate = 44100
         self.p = pyaudio.PyAudio()
+
+
         self.stream = self.p.open(
             format=self.format,
             channels=self.channels,
             rate=self.rate,
             input=True,
             frames_per_buffer=self.chunk,
+            input_device_index=0
         )
 
     def analyze_voice(self):
         while not rospy.is_shutdown():
-            data = self.stream.read(self.chunk)
+            data = self.stream.read(self.chunk,exception_on_overflow = False)
             audio_data = np.frombuffer(data, dtype=np.float32)
 
             pitch = self.get_pitch(audio_data)
             volume = self.get_volume(audio_data)
             is_speaking = self.is_speaking(volume)
 
+            # print(f"Pitch: {pitch}, Volume: {volume}, Is speaking: {is_speaking}")
+
             self.pitch_pub.publish(pitch)
             self.volume_pub.publish(volume)
-            self.is_speaking_pub.publish(is_speaking)
+            self.is_speaking_pub.publish(True)
 
     def get_pitch(self, audio_data):
         # ピッチ解析の処理を実装（例: librosaやpyinを使用）
@@ -49,3 +54,13 @@ class VoiceAnalyzer:
 
     def is_speaking(self, volume, threshold=0.01):
         return volume > threshold
+
+
+
+    def get_device_index(self, device_name):
+        # デバイス名に一致するデバイスIDを返す
+        for i in range(self.p.get_device_count()):
+            info = self.p.get_device_info_by_index(i)
+            if device_name in info['name']:
+                return i
+        raise ValueError(f"Device '{device_name}' not found")
