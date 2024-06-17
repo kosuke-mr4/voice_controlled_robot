@@ -7,6 +7,10 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
+  roscpp
+  std_msgs
+  nav_msgs
+  tf
 )
 
 # Enable catkin python setup

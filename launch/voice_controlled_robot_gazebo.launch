@@ -1,25 +1,15 @@
 <launch>
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find voice_controlled_robot)/worlds/voice_controlled_robot.world"/>
-  </include>
-
-  <param name="robot_description" command="$(find xacro)/xacro '$(find voice_controlled_robot)/urdf/voice_controlled_robot.urdf'" />
-
+  <arg name="device" default="/dev/ttyACM0"/>
+  <arg name="robot_name" default="beego"/>
   <arg name="port" default="9090"/>
   <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" args="_port:=$(arg port)"/>
-  
-  <rosparam file="$(find voice_controlled_robot)/config/diff_drive_controller.yaml" command="load"/>
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
-        args="diff_drive_controller"/>
-
-  <node pkg="voice_controlled_robot" type="voice_controlled_robot_node.py" name="voice_controlled_robot_node" output="screen"/>
-
-  <node name="gazebo_model_spawner" pkg="gazebo_ros" type="spawn_model"
-        args="-urdf -model voice_controlled_robot -param robot_description -x 0 -y 0 -z 0.5"
-        respawn="false" output="screen">
-    <remap from="/tf" to="/tf_gazebo"/>
-    <param name="delete_on_exit" value="true"/>
+  <node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros" required="true">
+      <param name="param_file" value="/home/yahagi-k/researches/programs/platform/yp-robot-params/robot-params/beego.param"/>
+      <param name="port" value="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00"/>
+      <param name="compatible" value="1"/>
+      <param name="odom_id" value="odom"/>
+      <param name="base_link_id" value="base_link"/>
   </node>
-
+  <node pkg="voice_controlled_robot" type="voice_controlled_robot_node.py" name="voice_controlled_robot_node" output="screen"/>
 
 </launch>
