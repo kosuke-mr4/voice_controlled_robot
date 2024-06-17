@@ -1,0 +1,11 @@
+version: "1"
+
+services:
+  voice_controlled_robot_container:
+    build: .
+    container_name: voice_controlled_robot_container
+    volumes:
+      - .:/catkin_ws/src/voice_controlled_robot
+    command: bash
+    tty: true
+    stdin_open: true
