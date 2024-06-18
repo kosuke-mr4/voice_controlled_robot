@@ -1,5 +1,5 @@
 <launch>
-  <arg name="device" default="/dev/ttyACM0"/>
+  <arg name="device" default="/dev/ttyACM1"/>
   <arg name="robot_name" default="beego"/>
   <arg name="port" default="9090"/>
   <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" args="_port:=$(arg port)"/>
