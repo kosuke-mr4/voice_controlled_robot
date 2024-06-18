@@ -52,7 +52,7 @@
         </button>
       </div>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
       let audioContext;
       let analyser;
@@ -66,8 +66,19 @@
       const audioContextStateDisplay =
         document.getElementById("audioContextState");
       const analyserStateDisplay = document.getElementById("analyserState");
+      const socket = io(
+        "https://apparent-raccoon-close.ngrok-free.app/socket.io/"
+      );
 
+      socket.on("connect", () => {
+        console.log("connect");
+      });
       startButton.addEventListener("click", startAudioVisualizer);
+
+      // サーバーからのメッセージを受信したときに呼び出されるイベント
+      socket.on("broadcast_audio_data", function (data) {
+        console.log("Received from server:", data);
+      });
 
       function startAudioVisualizer() {
         startButton.disabled = true;
@@ -116,12 +127,14 @@
 
               const volume = Math.max(...dataArray) - 128;
               volumeDisplay.textContent = volume.toFixed(0);
-              console.log("音量:", volume);
+              // console.log("音量:", volume);
 
               analyser.getByteFrequencyData(dataArray);
               const frequency = dataArray.indexOf(Math.max(...dataArray));
               frequencyDisplay.textContent = frequency;
-              console.log("周波数:", frequency);
+              // console.log("周波数:", frequency);
+
+              sendAudioData(volume, frequency);
 
               audioContextStateDisplay.textContent = audioContext.state;
               analyserStateDisplay.textContent =
@@ -137,6 +150,14 @@
             micStatusDisplay.textContent = "マイクへのアクセスが拒否されました";
             startButton.disabled = false;
           });
+      }
+
+      function sendAudioData(volume, frequency) {
+        const data = {
+          volume: volume,
+          frequency: frequency,
+        };
+        socket.emit("audio_data", data);
       }
     </script>
   </body>
