@@ -58,6 +58,8 @@
       let analyser;
       let isRecording = false;
       let animationId;
+      let frameCount = 0;
+      let startTime = Date.now();
 
       const startStopButton = document.getElementById("startStopButton");
       const canvas = document.getElementById("waveform");
@@ -155,6 +157,14 @@
               analyserStateDisplay.textContent =
                 analyser.numberOfInputs > 0 ? "Connected" : "Disconnected";
 
+              frameCount++;
+              const elapsed = (Date.now() - startTime) / 1000;
+              if (elapsed >= 1) {
+                const fps = frameCount / elapsed;
+                console.log("FPS:", fps.toFixed(2));
+                frameCount = 0;
+                startTime = Date.now();
+              }
               animationId = requestAnimationFrame(draw);
             }
 
@@ -191,7 +201,7 @@
           volume: volume,
           frequency: frequency,
         };
-        console.log("Send to server:", data)
+        console.log("Send to server:", data);
         socket.emit("audio_data", data);
       }
     </script>
