@@ -14,14 +14,14 @@ class VoiceAnalyzer:
 
     async def echo(self, websocket):
         async for message in websocket:
-            print(data)
-            data = json.loads(message)    
+            data = json.loads(message) 
+            print(data)   
             self.volume_pub.publish(Float32(data['volume']))
             self.pitch_pub.publish(Float32(data['frequency']))
             self.is_speaking_pub.publish(Bool(data['volume'] > 5.0))
 
     async def main(self):
-        async with serve(self.echo, "localhost", 5002):
+        async with serve(self.echo, "0.0.0.0", 5002):
             await asyncio.Future()  # run forever
 
     def analyze_voice(self):
