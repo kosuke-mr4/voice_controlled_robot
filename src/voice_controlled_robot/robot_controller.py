@@ -26,17 +26,14 @@ class RobotController:
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             if self.is_speaking:
-                cmd_vel = Twist()
-                cmd_vel.linear.x = self.volume * 0.3
-                cmd_vel.angular.z = 0.0
-                # if(cmd_vel.linear.x  > 1.0):
-                #     cmd_vel.linear.x = 1.0
-                # if(cmd_vel.angular.z > 1.0):
-                #     cmd_vel.angular.z = 1.0
-                self.cmd_vel_pub.publish(cmd_vel)
+                if self.pitch >　100:
+                    cmd_vel.linear.x = 0.0
+                    cmd_vel.angular.z = 0.5
+                else:
+                    cmd_vel.linear.x = self.volume * 0.3
+                    cmd_vel.angular.z = 0.0
             else:
-                cmd_vel = Twist()
                 cmd_vel.linear.x = 0.0
-                cmd_vel.angular.z = 0.5
+                cmd_vel.angular.z = 0.0
                 self.cmd_vel_pub.publish(cmd_vel)
             rate.sleep()
