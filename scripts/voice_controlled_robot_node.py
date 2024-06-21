@@ -1,14 +1,7 @@
-#!/usr/bin/env python3
-
-import sys
-import os
-import threading
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
-
 import rospy
 from voice_controlled_robot.voice_analyzer import VoiceAnalyzer
 from voice_controlled_robot.robot_controller import RobotController
+import threading
 
 if __name__ == "__main__":
     rospy.init_node("voice_controlled_robot_node", anonymous=True)
