@@ -14,8 +14,8 @@ class VoiceAnalyzer:
 
     async def echo(self, websocket):
         async for message in websocket:
-            data = json.loads(message) 
-            print(data)   
+            print(message)
+            data = json.loads(message)   
             self.volume_pub.publish(Float32(data['volume']))
             self.pitch_pub.publish(Float32(data['frequency']))
             self.is_speaking_pub.publish(Bool(data['volume'] > 5.0))
