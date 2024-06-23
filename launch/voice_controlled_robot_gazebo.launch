@@ -3,7 +3,7 @@
   <arg name="robot_name" default="beego"/>
   <arg name="port" default="9090"/>
   <node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros" required="true">
-      <param name="param_file" value="/home/yahagi-k/researches/programs/platform/yp-robot-params/robot-params/beego.param"/>
+      <param name="param_file" value="$(env HOME)/researches/programs/platform/yp-robot-params/robot-params/beego.param"/>
       <param name="port" value="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00"/>
       <param name="compatible" value="1"/>
       <param name="odom_id" value="odom"/>
